@@ -9,7 +9,7 @@ namespace Mango.Services.AuthAPI.Service.IService
         /// </summary>
         /// <param name="registrationRequestDto">The registration request dto.</param>
         /// <returns></returns>
-        Task<UserDto> Register(RegistrationRequestDto registrationRequestDto);
+        Task<string> Register(RegistrationRequestDto registrationRequestDto);
         /// <summary>
         /// Logins the specified login request dto.
         /// </summary>
