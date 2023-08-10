@@ -32,9 +32,27 @@ namespace Mango.Services.AuthAPI.Service
         /// <param name="loginRequestDto">The login request dto.</param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+        public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            throw new NotImplementedException();
+            var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower().Equals(loginRequestDto.UserName.ToLower()));
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+            if (user == null || !isValid) 
+                return new LoginResponseDto() { User = null, Token = "" };
+
+            // If user was found, Generate JWT Token.
+            UserDto userDto = new()
+            {
+                Email = user.Email,
+                ID = user.Id,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return new LoginResponseDto()
+            {
+                User = userDto,
+                Token = ""
+            };
         }
         /// <summary>
         /// Registers the specified registration request dto.
@@ -59,7 +77,7 @@ namespace Mango.Services.AuthAPI.Service
                 if (result.Succeeded)
                 {
                     var userToReturn = _db.ApplicationUsers.First(u => u.UserName.Equals(registrationRequestDto.Email));
-                    UserDto userDto= new()
+                    UserDto userDto = new()
                     {
                         Email = userToReturn.Email,
                         ID = userToReturn.Id,

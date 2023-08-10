@@ -29,17 +29,20 @@ namespace Mango.Services.AuthAPI.Controllers
                 return BadRequest(_response);
             }
             else
-            {
                 return Ok(_response);
-            }
-
-            return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
-            return Ok();
+            var loginResponse = await _authService.Login(model);
+            if(loginResponse == null)
+                return BadRequest(_response);
+           
+            _response.IsSuccess = true;
+            _response.Result = loginResponse;
+            return Ok(_response);
+
         }
     }
 }
