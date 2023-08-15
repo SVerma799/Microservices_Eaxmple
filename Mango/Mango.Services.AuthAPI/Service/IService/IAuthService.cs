@@ -2,6 +2,9 @@
 
 namespace Mango.Services.AuthAPI.Service.IService
 {
+    /// <summary>
+    /// Authentication Service Interface.
+    /// </summary>
     public interface IAuthService
     {
         /// <summary>
@@ -16,5 +19,12 @@ namespace Mango.Services.AuthAPI.Service.IService
         /// <param name="loginRequestDto">The login request dto.</param>
         /// <returns></returns>
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        /// <summary>
+        /// Assigns the role.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="roleName">Name of the role.</param>
+        /// <returns></returns>
+        Task<bool> AssignRole(string email, string roleName); 
     }
 }
